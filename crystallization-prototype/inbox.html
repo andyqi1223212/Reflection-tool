@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Inbox · awaiting human runs</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="inbox.css" />
+  <link rel="stylesheet" href="feedback-form.css" />
+</head>
+<body>
+  <header class="top inbox-top">
+    <nav class="inbox-nav">
+      <a href="dev-hub.html">开发台</a>
+      <a href="pipeline_run.html">Pipeline Run</a>
+      <a href="index.html">主站</a>
+      <span class="muted" id="last-refresh">_index.js 未加载</span>
+    </nav>
+    <h1>Inbox · awaiting_human runs</h1>
+    <p class="tagline">
+      列出 <code>status=awaiting_human</code> 的 run。展开卡片可内联查看 a/b/judge 等 JSON（由
+      <code>runs/_index.py</code> 生成，非实时）。请用
+      <code>bash tools/start_dev_ui.sh</code> 打开开发台（含打分）。
+    </p>
+    <details class="inbox-help">
+      <summary>accept / reject 会做什么？（inbox 本身不执行任何命令）</summary>
+      <ul>
+        <li><strong>accept</strong>：只复制一行终端命令。你在仓库根粘贴执行后，orchestrator <strong>仅重跑 push 阶段</strong>，按 B 的 <code>output_kind</code> 调 <code>merge --mode new|update|meta</code>，把卡写入 <code>inquiry-chain-demo-v3-good-answer.md</code> 并 export。若你已在 chat 里 merge 过同场景，可能 <strong>exit 4 撞 id</strong>——应 reject 或删重复段。</li>
+        <li><strong>reject</strong>：只复制 <code>mv runs/&lt;id&gt; runs/_rejected/</code>。不删 v3 md、不调 API、不入库；只是把该 run 文件夹挪走，刷新后从 inbox 消失。</li>
+        <li><strong>verdict=pass 但仍在 inbox</strong>：通常是 push 失败（如曾经的 meta 未实现）；现在 meta 已支持，accept 一般<strong>不需要</strong> <code>--force-pass</code>。</li>
+        <li><strong>conditional_pass / fail</strong>：accept 命令会带 <code>--force-pass</code>（人审覆写后 merge）。</li>
+      </ul>
+    </details>
+    <label class="sr-only" for="inbox-search">搜索 run</label>
+    <input
+      id="inbox-search"
+      type="search"
+      autocomplete="off"
+      placeholder="搜 question_md 文件名 / run_id…"
+    />
+    <div class="chip-row" id="verdict-chips" aria-label="按 verdict 过滤"></div>
+  </header>
+
+  <main id="run-list" aria-live="polite"></main>
+
+  <dialog id="action-modal">
+    <h3 id="action-modal-title">复制命令到终端</h3>
+    <p class="muted" id="action-modal-hint"></p>
+    <div id="action-modal-detail" class="action-modal-detail"></div>
+    <pre><code id="action-modal-cmd"></code></pre>
+    <div class="action-modal-buttons">
+      <button id="action-copy" type="button">复制</button>
+      <button id="action-close" type="button">关闭</button>
+    </div>
+    <p id="action-copy-status" class="copy-status" role="status"></p>
+  </dialog>
+
+  <script src="../runs/_index.js"></script>
+  <script src="feedback-form.js"></script>
+  <script src="inbox.js"></script>
+</body>
+</html>

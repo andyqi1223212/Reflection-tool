@@ -1,0 +1,27 @@
+{
+  "route": "new",
+  "title": "周末计划学习却刷手机一整天，周日晚上焦虑",
+  "patterns": [
+    "P-KNOW-DO",
+    "P-EFF",
+    "P-SPIRAL"
+  ],
+  "axis": "attention",
+  "chain": {
+    "trigger": "每个周末都计划好要看书、运动、学新东西，但一到周六就开始刷手机，刷一整天，周日晚上又开始焦虑，恶性循环。",
+    "questions": [
+      "是不是就是单纯的自制力差？",
+      "那我周末还是要躺平咯？"
+    ]
+  },
+  "mechanism_sketch": "你不是自制力差，你是在用周末的刷手机补偿工作日缺失的自由意志。工作日被任务推着走，没有留给自己任何“为自己”的时刻，身体就把周末当成唯一可以释放“不计划”信号的窗口。你越是计划周末要学习，越触发反弹，因为那在神经系统里等同于“继续剥夺自由”。",
+  "source_refs": [],
+  "diagnostic_notes": {
+    "route_reasoning": "route_helper top1=IC-010 score=0.0347 confidence=high 建议 new，语义层同意：周末颓废机制——工作日缺乏自由意志导致周末报复性补偿——是一个全新的 trigger family，与现有 IC 库中项目恐慌、睡前上厕所等卡无实质同源，触发情境和核心 pattern 均独立。",
+    "related_existing_ic": [
+      "IC-015"
+    ],
+    "axis_reasoning": "用户痛感是“焦虑”“恶性循环”，属于计划无法执行带来的内心消耗，按 schema §7 属于“偷算力 / 没闭环”的 attention 轴，而非他人评价恐惧。",
+    "pattern_reasoning": "P-KNOW-DO：计划与行动的割裂（知易行难）；P-EFF：效率焦虑触发反弹（越是要求高效越刷手机）；P-SPIRAL：刷手机→焦虑→继续刷的恶性循环。"
+  }
+}

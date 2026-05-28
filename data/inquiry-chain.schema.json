@@ -1,0 +1,173 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "InquiryChain",
+  "type": "object",
+  "required": ["id", "title", "patterns", "axis", "crystallization", "chain"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^IC-\\d{3}$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 4,
+      "maxLength": 60
+    },
+    "patterns": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "P-EVAL",
+          "P-OVER",
+          "P-SPIRAL",
+          "P-EFF",
+          "P-UNDER",
+          "P-EXIST",
+          "P-KNOW-DO",
+          "P-FAMILY"
+        ]
+      }
+    },
+    "axis": {
+      "enum": ["judgment", "attention"]
+    },
+    "crystallization": {
+      "type": "object",
+      "required": ["mechanism", "anchor", "micro_steps"],
+      "additionalProperties": false,
+      "properties": {
+        "mechanism": {
+          "type": "string",
+          "minLength": 30,
+          "maxLength": 200
+        },
+        "anchor": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 20
+        },
+        "micro_steps": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 3,
+          "items": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 60
+          }
+        }
+      }
+    },
+    "chain": {
+      "type": "object",
+      "required": ["trigger", "questions"],
+      "additionalProperties": false,
+      "properties": {
+        "trigger": {
+          "type": "string",
+          "minLength": 10
+        },
+        "questions": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "string",
+            "minLength": 4
+          }
+        }
+      }
+    },
+    "source_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "updates": {
+      "type": "array",
+      "description": "v2.1+ append-only update entries；每张卡在多轮 update 后累积。无此字段或空数组都合法",
+      "items": {
+        "type": "object",
+        "required": ["updated_at", "patch_reasoning"],
+        "additionalProperties": false,
+        "properties": {
+          "updated_at": {
+            "type": "string",
+            "format": "date"
+          },
+          "patch_reasoning": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "crystallization": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "本次新增的三层文本，全部可选；空对象等价于本次未补三层文本",
+            "properties": {
+              "mechanism": {
+                "type": "string",
+                "minLength": 30,
+                "maxLength": 200
+              },
+              "anchor": {
+                "type": "string",
+                "minLength": 4,
+                "maxLength": 20
+              },
+              "micro_steps": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 3,
+                "items": {
+                  "type": "string",
+                  "minLength": 5,
+                  "maxLength": 60
+                }
+              }
+            }
+          },
+          "patterns_added": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "P-EVAL",
+                "P-OVER",
+                "P-SPIRAL",
+                "P-EFF",
+                "P-UNDER",
+                "P-EXIST",
+                "P-KNOW-DO",
+                "P-FAMILY"
+              ]
+            }
+          },
+          "source_refs_added": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "questions_appended": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 4
+            }
+          },
+          "trigger_addendum": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

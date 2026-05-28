@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Growth · 维护台</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .hub-wrap {
+      max-width: 36rem;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 3rem;
+    }
+    .hub-wrap h1 {
+      margin: 0 0 0.35rem;
+      font-size: 1.5rem;
+    }
+    .hub-lead {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin: 0 0 1.25rem;
+    }
+    .hub-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .hub-card {
+      display: block;
+      padding: 1rem 1.1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      text-decoration: none;
+      color: inherit;
+      box-shadow: 0 1px 2px rgb(28 25 23 / 4%);
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .hub-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 2px 8px rgb(15 118 110 / 12%);
+    }
+    .hub-card h2 {
+      margin: 0 0 0.25rem;
+      font-size: 1.05rem;
+      color: var(--accent);
+    }
+    .hub-card p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .hub-nav-top {
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+    }
+    .hub-nav-top a {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .hub-nav-top a:hover {
+      text-decoration: underline;
+    }
+    .hub-foot {
+      margin-top: 1.5rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .hub-foot code {
+      font-size: 0.76rem;
+      background: var(--surface);
+      padding: 0.1rem 0.35rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+  <div class="hub-wrap">
+    <p class="hub-nav-top"><a href="dev-hub.html">← 开发台（Launch）</a></p>
+    <h1>Growth · 维护台</h1>
+    <p class="hub-lead">
+      Context 装配、Lexicon / Synthesis 审阅、Trial 对比——日常 launch 不从这里进，给迭代与 dogfood 用。
+    </p>
+    <nav class="hub-grid" aria-label="维护工具入口">
+      <a class="hub-card" href="/context-curator/">
+        <h2>Context 审阅器</h2>
+        <p>Pipeline A / B / Judge 实际上下文装配与 crosscheck（勾选模拟瘦身）。</p>
+      </a>
+      <a class="hub-card" href="lexicon_review.html">
+        <h2>Lexicon Review · 风格规则候选</h2>
+        <p>synthesize_lexicon 产候选 → 逐条采纳 / 拒绝 / 改后 → apply 即 bump 版本号。</p>
+      </a>
+      <a class="hub-card" href="lexicon_review.html?tab=synthesis">
+        <h2>Synthesis Review · 用户记忆库</h2>
+        <p>最近 runs 聚类 → 审 §2/§5/§6 patches → apply 更新 raw-questions-synthesis.md。</p>
+      </a>
+      <a class="hub-card" href="lexicon_review.html?tab=trial">
+        <h2>Trial Diff · lexicon 重跑对比</h2>
+        <p>复用 a.json 重跑 B，左右对比 mech / anchor / steps（需本开发台端口打开）。</p>
+      </a>
+    </nav>
+    <p class="hub-foot">
+      刷新审阅器数据：<code>python tools/export_agentflow_context_chunks.py</code>
+    </p>
+  </div>
+</body>
+</html>

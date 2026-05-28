@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pipeline Run · 提交 question md</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="pipeline_run.css" />
+</head>
+<body>
+  <header class="top pr-top">
+    <nav class="pr-nav">
+      <a href="dev-hub.html">开发台</a>
+      <a href="index.html">主站</a>
+      <a href="inbox.html">Inbox</a>
+      <a href="maintainer-hub.html">维护台</a>
+    </nav>
+    <h1>Pipeline Run</h1>
+    <p class="tagline">
+      提交 <code>question_md</code>，跑完整链路
+      <strong>route_helper → A → B → Judge → push</strong>。verdict=pass 且勾选自动入库时会 merge 进 v3 并 export。
+      需 <code>bash tools/start_dev_ui.sh</code>（会调 LLM，耗时数分钟）。
+    </p>
+  </header>
+
+  <main class="pr-layout">
+    <section class="pr-panel" aria-labelledby="pr-source-heading">
+      <h2 id="pr-source-heading">1 · 选择或粘贴 Markdown</h2>
+      <div class="pr-field">
+        <label for="pr-source-select">已有文件（外部source/）</label>
+        <div class="pr-source-row">
+          <select id="pr-source-select" aria-label="外部 source 列表"></select>
+          <button type="button" class="secondary" id="pr-load-source">载入到编辑器</button>
+        </div>
+      </div>
+      <div class="pr-field">
+        <label for="pr-filename">保存文件名</label>
+        <input
+          id="pr-filename"
+          type="text"
+          autocomplete="off"
+          placeholder="例：得觉.md"
+        />
+        <p class="pr-hint">粘贴新内容时写入 <code>外部source/&lt;文件名&gt;</code>；选已有文件时可不改名。</p>
+      </div>
+      <div class="pr-field">
+        <label for="pr-content">Markdown 正文</label>
+        <textarea
+          id="pr-content"
+          spellcheck="false"
+          placeholder="粘贴 question_md 全文，或从上方载入已有文件…"
+        ></textarea>
+      </div>
+    </section>
+
+    <section class="pr-panel" aria-labelledby="pr-options-heading">
+      <h2 id="pr-options-heading">2 · 运行选项</h2>
+      <div class="pr-options">
+        <label>
+          <input type="checkbox" id="pr-auto-push" checked />
+          <span>verdict=pass 时自动 push（merge 进 v3 + export chains.json）</span>
+        </label>
+        <label>
+          <input type="checkbox" id="pr-force-pass" />
+          <span>force-pass：conditional_pass / fail 也当 pass merge（慎用）</span>
+        </label>
+      </div>
+      <div class="pr-actions" style="margin-top: 0.85rem">
+        <button type="button" id="pr-run">运行 Pipeline</button>
+        <button type="button" class="secondary" id="pr-clear">清空</button>
+      </div>
+    </section>
+
+    <section class="pr-panel" aria-labelledby="pr-result-heading">
+      <h2 id="pr-result-heading">3 · 结果</h2>
+      <div id="pr-status" class="pr-status" role="status">等待运行</div>
+      <div id="pr-result-links" class="pr-result-links"></div>
+      <pre id="pr-log" class="pr-log" aria-label="运行日志"></pre>
+    </section>
+  </main>
+
+  <script src="pipeline_run.js"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+# === Core (required) ===
+openai>=1.40.0          # LLM client (OpenAI-compatible API for DeepSeek)
+python-dotenv>=1.0.0    # load .env at runtime
+PyYAML>=6.0             # prompt frontmatter parsing
+
+# === Optional ===
+jsonschema>=4.20.0      # validate exported chains.json (tools/validate_chains_json.py)
+pytest>=8.0.0           # for running tests (agents_runtime/tests/)

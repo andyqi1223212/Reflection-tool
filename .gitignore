@@ -1,0 +1,57 @@
+# === Python ===
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# === 本地开发产物 ===
+_debug/
+_debug_*/
+.lexicon_apply.lock
+.orchestrate_run.lock
+.synthesis_apply.lock
+*.bak
+
+# === 环境 ===
+.env
+.env.local
+
+# === 编辑器 ===
+.DS_Store
+**/.DS_Store
+.vscode/
+.idea/
+*.swp
+
+# === 个人内容数据（不发） ===
+inquiry-chain-demo-v3-good-answer.md
+data/chains.json
+data/inquiry-chain-demo-v3-good-answer.json
+外部source/
+回答版本explore/*
+!回答版本explore/良质回答标注册.template.md
+context/raw-questions-synthesis.md
+context/_archive/
+archive/
+.cursor/plans/
+agentflow3-tocode/launch-subplans/
+
+# === 用户运行时数据 ===
+users/
+runs/
+eval/lexicon_trials/
+eval/lexicon_v2_dogfood/
+agents_runtime/_stats/
+
+# === 个人偏好 / 编辑器规则 ===
+.cursorrules
+
+# === 生成的个人 context（含真实对话片段） ===
+pipeline-b-context-curator/chunks.data.js
+crystallization-prototype/chains.data.js
+
+# === Node modules (if any) ===
+node_modules/
+
+# === Local overrides ===
+# 在此追加你本地不想 track 的文件

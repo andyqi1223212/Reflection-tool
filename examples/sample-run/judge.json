@@ -1,0 +1,31 @@
+{
+  "card_id": "IC-NEW",
+  "output_kind": "full_card",
+  "scores": {
+    "mechanism": 4.5,
+    "anchor": 5,
+    "micro_steps": 5,
+    "axis_pattern_consistency": 5,
+    "anchor_mechanism_consistency": 5,
+    "landing_pad_pairing": 5
+  },
+  "route_aware_checks": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "check": "chain_questions_passthrough",
+        "status": "pass",
+        "evidence": "No chain.questions provided in route_context; assuming passthrough from A implicitly, as questions from trigger are reasonable."
+      },
+      {
+        "check": "not_for_anchor_respected",
+        "status": "pass",
+        "evidence": "raw_answer_seeds is null; no forbidden terms."
+      }
+    ]
+  },
+  "verdict": "pass",
+  "fail_reasons": [],
+  "suggested_revisions": [],
+  "reviewer_note": "Crystallization 三层均高质量：命名+因果清晰，anchor 短而有力，micro_steps 全是身体动作且对应支点。patterns 与 axis 完全一致。Style matches DS 口语 + 客观拆解，无婆婆妈妈或 CS 味。"
+}

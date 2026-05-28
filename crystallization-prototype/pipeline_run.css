@@ -1,0 +1,203 @@
+/* Pipeline Run — reuses styles.css tokens */
+
+.pr-top h1 {
+  margin: 0.35rem 0 0.25rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.pr-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  margin-bottom: 0.35rem;
+}
+
+.pr-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.pr-nav a:hover {
+  text-decoration: underline;
+}
+
+.pr-layout {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 0 1rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.pr-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.1rem;
+}
+
+.pr-panel h2 {
+  margin: 0 0 0.65rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.pr-field {
+  margin-bottom: 0.75rem;
+}
+
+.pr-field label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.pr-field input[type="text"],
+.pr-field select,
+.pr-field textarea {
+  width: 100%;
+  font: inherit;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+}
+
+.pr-field textarea {
+  min-height: 12rem;
+  resize: vertical;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.pr-hint {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin: 0.25rem 0 0;
+}
+
+.pr-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+}
+
+.pr-options label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  cursor: pointer;
+}
+
+.pr-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.pr-actions button {
+  font: inherit;
+  font-weight: 600;
+  padding: 0.55rem 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+}
+
+.pr-actions button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.pr-actions button.secondary {
+  background: var(--surface);
+  color: var(--text);
+}
+
+.pr-status {
+  font-size: 0.85rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.pr-status[data-tone="running"] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.pr-status[data-tone="ok"] {
+  border-color: #059669;
+  background: #ecfdf5;
+}
+
+.pr-status[data-tone="warn"] {
+  border-color: #d97706;
+  background: #fffbeb;
+}
+
+.pr-status[data-tone="err"] {
+  border-color: #dc2626;
+  background: #fef2f2;
+}
+
+.pr-log {
+  margin: 0;
+  padding: 0.75rem;
+  font-size: 0.78rem;
+  font-family: ui-monospace, Menlo, monospace;
+  background: #1c1917;
+  color: #e7e5e4;
+  border-radius: var(--radius);
+  max-height: 16rem;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.pr-result-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+.pr-result-links a {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.pr-source-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+.pr-source-row select {
+  flex: 1;
+}
+
+.pr-source-row button.secondary {
+  flex-shrink: 0;
+  font: inherit;
+  font-weight: 600;
+  padding: 0.55rem 0.75rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+}

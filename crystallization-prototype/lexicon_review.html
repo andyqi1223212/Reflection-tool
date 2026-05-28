@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lexicon Review · 候选审阅</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="lexicon_review.css" />
+</head>
+<body class="lr-page">
+  <header class="lr-top">
+    <nav class="lr-nav">
+      <a href="dev-hub.html">开发台</a>
+      <a href="maintainer-hub.html">维护台</a>
+      <a href="index.html">主站</a>
+      <a href="inbox.html">Inbox</a>
+      <span class="muted" id="lr-status">未加载</span>
+    </nav>
+    <div class="lr-tabs" role="tablist">
+      <button type="button" class="lr-tab lr-tab-active" data-tab="proposal" role="tab" aria-selected="true">Lexicon Review</button>
+      <button type="button" class="lr-tab" data-tab="synthesis" role="tab" aria-selected="false">Synthesis Review</button>
+      <button type="button" class="lr-tab" data-tab="trial" role="tab" aria-selected="false">Trial Diff</button>
+    </div>
+    <div class="lr-head-row">
+      <h1>Lexicon Review</h1>
+      <div class="lr-controls lr-controls-proposal">
+        <label for="lr-proposal-select">选择 proposal：</label>
+        <select id="lr-proposal-select" aria-label="proposal 列表"></select>
+        <span class="lr-version-badge" id="lr-version-badge">v?</span>
+      </div>
+      <div class="lr-controls lr-controls-synthesis" hidden>
+        <label for="lr-syn-proposal-select">synthesis proposal：</label>
+        <select id="lr-syn-proposal-select" aria-label="synthesis proposal 列表"></select>
+        <span class="lr-version-badge" id="lr-syn-synced-badge">—</span>
+      </div>
+      <div class="lr-controls lr-controls-trial" hidden>
+        <label for="lr-trial-version">trial 版本：</label>
+        <select id="lr-trial-version" aria-label="lexicon trial 版本"></select>
+        <label for="lr-trial-pick">pick：</label>
+        <select id="lr-trial-pick" aria-label="pick 策略">
+          <option value="last5_accepted">last5_accepted</option>
+          <option value="last5_pushed">last5_pushed</option>
+          <option value="judge_top5">judge_top5</option>
+        </select>
+        <button type="button" id="lr-trial-run-btn">跑 trial</button>
+      </div>
+    </div>
+    <p class="lr-lead lr-lead-proposal">
+      synthesize_lexicon 产候选 → 你逐条采纳 / 拒绝 / 改后采纳 → 应用即 bump lexicon 版本号。lexicon 是 Pipeline B 的 SSOT，所以必须人审。
+    </p>
+    <p class="lr-lead lr-lead-synthesis" hidden>
+      synthesize_user_memory 产候选 → 人审后 apply 写入 <code>raw-questions-synthesis.md</code> §2/§5/§6；Pipeline A 下次自动读新版（路径不变）。
+    </p>
+    <p class="lr-lead lr-lead-trial" hidden>
+      复用 runs 里已有 a.json，用指定 lexicon 重跑 B；左右对比 mech / anchor / steps，accept 会隐式写入 feedback.jsonl。
+    </p>
+    <p class="lr-meta" id="lr-meta"></p>
+    <p class="lr-meta lr-meta-synthesis" id="lr-syn-meta" hidden></p>
+  </header>
+
+  <main class="lr-main lr-panel-proposal" id="lr-panel-proposal">
+    <section class="lr-left" aria-label="patch 候选">
+      <h2 class="lr-section-title">候选 patches</h2>
+      <div id="lr-hypotheses" class="lr-hypotheses"></div>
+      <ol id="lr-patches" class="lr-patches" aria-live="polite"></ol>
+      <details class="lr-withheld">
+        <summary>未提的改动（withheld + auto_withheld）</summary>
+        <div id="lr-withheld-body"></div>
+      </details>
+    </section>
+    <section class="lr-right" aria-label="当前 lexicon">
+      <h2 class="lr-section-title">当前 lexicon</h2>
+      <pre id="lr-lexicon-content" class="lr-lexicon-content" tabindex="0"></pre>
+    </section>
+  </main>
+
+  <main class="lr-main lr-panel-synthesis lr-panel-hidden" id="lr-panel-synthesis" hidden>
+    <section class="lr-left" aria-label="synthesis patch 候选">
+      <h2 class="lr-section-title">候选 patches（§2 / §5 / §6）</h2>
+      <div id="lr-syn-hypotheses" class="lr-hypotheses"></div>
+      <ol id="lr-syn-patches" class="lr-patches" aria-live="polite"></ol>
+      <details class="lr-withheld">
+        <summary>未提的改动（withheld + auto_withheld）</summary>
+        <div id="lr-syn-withheld-body"></div>
+      </details>
+    </section>
+    <section class="lr-right" aria-label="当前 synthesis">
+      <h2 class="lr-section-title">当前 raw-questions-synthesis.md</h2>
+      <pre id="lr-syn-content" class="lr-lexicon-content" tabindex="0"></pre>
+    </section>
+  </main>
+
+  <main class="lr-main lr-panel-trial lr-panel-hidden" id="lr-panel-trial" hidden>
+    <section class="lr-trial-list" aria-label="trial 汇总">
+      <h2 class="lr-section-title">Trial 汇总</h2>
+      <p class="lr-trial-run-status" id="lr-trial-run-status" role="status"></p>
+      <table class="lr-trial-table" id="lr-trial-table">
+        <thead>
+          <tr>
+            <th>run_id</th>
+            <th>title</th>
+            <th>route</th>
+            <th>mech</th>
+            <th>anchor</th>
+            <th>steps</th>
+            <th>状态</th>
+            <th>备注</th>
+          </tr>
+        </thead>
+        <tbody id="lr-trial-tbody"></tbody>
+      </table>
+    </section>
+    <section class="lr-trial-detail" id="lr-trial-detail" hidden aria-label="单卡 diff">
+      <h2 class="lr-section-title" id="lr-trial-detail-title">单卡 diff</h2>
+      <div class="lr-trial-split">
+        <div class="lr-trial-col lr-trial-old">
+          <h3>旧 b.json</h3>
+          <div id="lr-trial-old-body"></div>
+        </div>
+        <div class="lr-trial-col lr-trial-new">
+          <h3>新 b（lexicon trial）</h3>
+          <div id="lr-trial-new-body"></div>
+        </div>
+      </div>
+      <div class="lr-trial-actions">
+        <button type="button" id="lr-trial-accept-btn">👍 单卡 accept</button>
+        <button type="button" id="lr-trial-reject-btn">👎 单卡 reject</button>
+        <button type="button" id="lr-trial-feedback-btn">📝 写 feedback</button>
+        <button type="button" id="lr-trial-close-detail">收起</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="lr-foot lr-foot-proposal">
+    <button id="lr-apply-btn" type="button" disabled>应用 0 个采纳</button>
+    <span class="lr-foot-hint" id="lr-foot-hint">勾选采纳后即可点击应用</span>
+  </footer>
+  <footer class="lr-foot lr-foot-synthesis" hidden>
+    <button id="lr-syn-apply-btn" type="button" disabled>应用 0 个采纳</button>
+    <span class="lr-foot-hint" id="lr-syn-foot-hint">勾选采纳后即可 apply synthesis</span>
+  </footer>
+  <footer class="lr-foot lr-foot-trial" hidden>
+    <button type="button" id="lr-trial-batch-accept" disabled>整体 accept 0 张 win</button>
+    <span class="lr-foot-hint muted">reject 回滚 lexicon：v0 不自动回滚，请手动 archive 恢复或走 sub2 下一轮 propose</span>
+  </footer>
+
+  <dialog id="lr-confirm-modal">
+    <h3>确认应用</h3>
+    <p>本次将创建 <code id="lr-next-path"></code>，并把当前版本归档到 <code id="lr-archive-path"></code>。<br />
+    同时更新 <code>agent第二轮/pipeline-b-style.prompt.md</code> 的 frontmatter（source / version / last_iter）。</p>
+    <ul id="lr-confirm-list"></ul>
+    <p class="muted">点确认后不可撤销（但 git 可 revert）。</p>
+    <div class="lr-modal-buttons">
+      <button id="lr-confirm-yes" type="button">确认应用</button>
+      <button id="lr-confirm-no" type="button">取消</button>
+    </div>
+    <p id="lr-confirm-status" role="status"></p>
+  </dialog>
+
+  <dialog id="lr-evidence-modal">
+    <h3>feedback 原文 · row <span id="lr-evidence-index"></span></h3>
+    <pre id="lr-evidence-content"></pre>
+    <div class="lr-modal-buttons">
+      <button id="lr-evidence-close" type="button">关闭</button>
+    </div>
+  </dialog>
+
+  <dialog id="lr-syn-confirm-modal">
+    <h3>确认 apply synthesis</h3>
+    <p>将备份到 <code id="lr-syn-archive-path"></code>，并原地更新 <code>context/raw-questions-synthesis.md</code>（末尾「最后更新」日期改为今天）。</p>
+    <ul id="lr-syn-confirm-list"></ul>
+    <div class="lr-modal-buttons">
+      <button id="lr-syn-confirm-yes" type="button">确认应用</button>
+      <button id="lr-syn-confirm-no" type="button">取消</button>
+    </div>
+    <p id="lr-syn-confirm-status" role="status"></p>
+  </dialog>
+
+  <dialog id="lr-syn-evidence-modal">
+    <h3>run · <span id="lr-syn-evidence-runid"></span></h3>
+    <pre id="lr-syn-evidence-content"></pre>
+    <div class="lr-modal-buttons">
+      <button id="lr-syn-evidence-close" type="button">关闭</button>
+    </div>
+  </dialog>
+
+  <dialog id="lr-trial-feedback-modal">
+    <h3>Trial feedback</h3>
+    <label>overall <input type="number" id="lr-trial-fb-score" min="1" max="5" value="5" /></label>
+    <textarea id="lr-trial-fb-text" rows="4" placeholder="可选补充"></textarea>
+    <div class="lr-modal-buttons">
+      <button type="button" id="lr-trial-fb-submit">提交</button>
+      <button type="button" id="lr-trial-fb-cancel">取消</button>
+    </div>
+    <p id="lr-trial-fb-status" role="status"></p>
+  </dialog>
+
+  <script src="lexicon_review.js?v=20260524b"></script>
+  <script src="lexicon_review_synthesis.js?v=20260524b"></script>
+  <script src="lexicon_review_trial.js?v=20260524b"></script>
+</body>
+</html>

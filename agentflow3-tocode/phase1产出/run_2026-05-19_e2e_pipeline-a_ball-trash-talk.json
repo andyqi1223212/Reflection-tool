@@ -1,0 +1,66 @@
+{
+  "route": "update",
+  "title": "球场被同学说垃圾话调侃投不进，从高兴一下被气到、脑子紧",
+  "patterns": [
+    "P-EVAL",
+    "P-SPIRAL",
+    "P-EFF",
+    "P-KNOW-DO"
+  ],
+  "axis": "attention",
+  "chain": {
+    "trigger": "在球场单挑时连续进三分正高兴，投了一个类似三不沾，同学正好来球场就调侃，从高兴一下被气到、脑子紧、内耗——不想喷他回去（觉得那样就不能控制自己 / 不想冲突 / 觉得自己比他厉害没必要），又怕不喷回去显得 weak。",
+    "questions": [
+      "球场上有人对我说垃圾话，有时会trigger我，我不想纠缠，但it touches my ego sometimes，我就有些脑子紧，内耗",
+      "下次遇见这种情况的策略，详细第一性原理，让我不要被trigger，or快速恢复",
+      "我如何判断对面是真的有一些恶意，还是我想多了，就是开火的标准是啥？",
+      "进入脑子紧的状态后如何快速跳出来，从脑科学神经科学等专业角度提出方案"
+    ]
+  },
+  "target_ic_id": "IC-024",
+  "update_directives": {
+    "mechanism": "新增一层独立机制：基于用户已内化的 ego 分离框架（评价来自 NPC，物理与人格分开，允许他人的本能反应），补充从情绪触发到认知解耦的因果链，并融入“判断开火标准”和“快速跳出状态”的脑科学原理。独立成段，不与原机制合并。",
+    "anchor": "新增候选短锚，风格属用户原话家族（如“评价是 NPC 的，我是主角”“物理与人格分开”“允许 NPC 瞎”），与原 anchor 并存。",
+    "micro_steps": "新增两条身体动作 + 认知锚：1. 延长呼气（着陆垫）激活副交感；2. 默念“这是 NPC 的触发，与我价值无关”。",
+    "patterns": "新增 P-SPIRAL（理由：用户反复纠结“不喷我是不是 weak”“我是不是很怂”，思维螺旋上升）",
+    "source_refs": "新增 B10/B13（attention 主轴锚），以及用户自 quote“我的人格价值来自于我存在”作为备用。",
+    "chain.questions": "尾部追加用户自陈总结：“别人的评价=npc，我是主角，评价不是对我的最终判决而是允许他瞎，允许npc本能反应，他说啥也只是一个小样本，不能定义真正的我。我的大脑应该知道这只是npc触发场景，ego知道我投球没进，别人触发场景和我的人格价值没关系，我的人格价值来自于我存在，物理和人格分开” 以及 “进入脑子紧的状态后如何快速跳出来”。",
+    "chain.trigger": "trigger 物理情境补充：泛化到任何被评价/可能被 judge 的场景，如分享学习资料时的不安全感、害怕破坏关系等。"
+  },
+  "source_refs": [
+    "B10",
+    "B13"
+  ],
+  "raw_answer_seeds": {
+    "insight_quotes": [
+      {
+        "quote": "别人的评价=npc，我是主角，评价不是对我的最终判决而是允许他瞎，允许npc本能反应，他说啥也只是一个小样本，不能定义真正的我。",
+        "source": "user_self_reflection"
+      },
+      {
+        "quote": "我的人格价值来自于我存在，物理和人格分开",
+        "source": "user_self_reflection"
+      }
+    ],
+    "suggested_anchor_family": [
+      "NPC与主角家族",
+      "物理与人格分开家族"
+    ],
+    "not_for_anchor": []
+  },
+  "diagnostic_notes": {
+    "route_reasoning": "route_helper top1=IC-024 score=0.7087 confidence=high；语义判定：question_md 描述的 trigger 与 IC-024 的 trigger（同学调侃三不沾→脑子紧内耗）实质同源，且新增了 ego 分离的元认知层、判断恶意标准和快速跳出方法，属于在原 trigger 基础上的深化和补充，因此 route=update IC-024。",
+    "related_existing_ic": [
+      "IC-024"
+    ],
+    "axis_reasoning": "用户痛感是“脑子紧”“内耗”，按 schema §7 这是“偷算力/没闭环”，→ attention。尽管有怕被 judge 的成分，但核心是内部算力被情绪占用。",
+    "pattern_reasoning": "P-EVAL: 怕被调侃、怕被看作weak；P-SPIRAL: 反复纠结“不喷我是不是weak”，思维螺旋；P-EFF: 得失心绑架，维护自我形象；P-KNOW-DO: 知易行难（知道没必要但被 trigger）。"
+  },
+  "_meta": {
+    "run_date": "2026-05-19",
+    "question_md": "外部source/球场垃圾话应对策略.md",
+    "route_helper": "/tmp/route_helper.json（本机路径；top1=IC-024 confidence=high）",
+    "cli": "./venv/bin/python3 -m agents_runtime.agents run_a <question> <route_helper.json>",
+    "notes": "Phase 1 本机 E2E 快照；与 agents/runs/run_2026-05-11（v1 route=new 叙事）对照见 03-黄金对照"
+  }
+}

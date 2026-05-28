@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Growth · 开发台</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .hub-wrap {
+      max-width: 36rem;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 3rem;
+    }
+    .hub-wrap h1 {
+      margin: 0 0 0.35rem;
+      font-size: 1.5rem;
+    }
+    .hub-lead {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin: 0 0 1.25rem;
+    }
+    .hub-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .hub-card {
+      display: block;
+      padding: 1rem 1.1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      text-decoration: none;
+      color: inherit;
+      box-shadow: 0 1px 2px rgb(28 25 23 / 4%);
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .hub-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 2px 8px rgb(15 118 110 / 12%);
+    }
+    .hub-card h2 {
+      margin: 0 0 0.25rem;
+      font-size: 1.05rem;
+      color: var(--accent);
+    }
+    .hub-card p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .hub-foot {
+      margin-top: 1.5rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .hub-foot code {
+      font-size: 0.76rem;
+      background: var(--surface);
+      padding: 0.1rem 0.35rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+    .hub-foot a {
+      color: var(--accent);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="hub-wrap">
+    <h1>Growth · 开发台</h1>
+    <p class="hub-lead">
+      Launch 入口：主站、人审 Inbox、新 question 跑全流程。启动
+      <code>bash tools/start_dev_ui.sh</code>
+    </p>
+    <nav class="hub-grid" aria-label="开发工具入口">
+      <a class="hub-card" href="index.html">
+        <h2>主站 · Crystallization</h2>
+        <p>已入库晶体卡：trigger 检索、笔记、对卡打分（target_type=card）。</p>
+      </a>
+      <a class="hub-card" href="inbox.html">
+        <h2>Inbox · 待审 run</h2>
+        <p>awaiting_human：Judge 分数、accept/reject 命令、对 run 打分。</p>
+      </a>
+      <a class="hub-card" href="pipeline_run.html">
+        <h2>Pipeline Run · 提交 question md</h2>
+        <p>粘贴或选择外部 source → A/B/Judge → pass 时自动 push 入库。</p>
+      </a>
+    </nav>
+    <p class="hub-foot">
+      Context / Lexicon / Trial 等维护工具 → <a href="maintainer-hub.html">维护台</a> ·
+      刷新 inbox：<code>python runs/_index.py</code>
+    </p>
+  </div>
+</body>
+</html>

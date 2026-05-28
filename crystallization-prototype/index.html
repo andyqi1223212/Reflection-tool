@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Crystallization · trigger 着陆</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="inbox.css" />
+  <link rel="stylesheet" href="feedback-form.css" />
+</head>
+<body>
+  <header class="top">
+    <nav class="top-nav">
+      <a class="inbox-link" href="dev-hub.html">开发台</a>
+      <a class="inbox-link" href="pipeline_run.html">Pipeline Run</a>
+      <a class="inbox-link" href="inbox.html">→ inbox</a>
+    </nav>
+    <p class="tagline">未输入、未选标签时展示全部卡片；有关键词或标签时只显示命中项。每张卡底部可折叠「我的笔记」（仅本机），需要时再展开。</p>
+    <label class="sr-only" for="trigger-input">Trigger 关键词</label>
+    <input
+      id="trigger-input"
+      type="search"
+      autocomplete="off"
+      placeholder="输入当下念头（中英文均可）…"
+    />
+    <div class="chip-rows">
+      <div class="chip-row" id="pattern-chips" aria-label="Pattern tags"></div>
+      <div class="chip-row" id="axis-chips" aria-label="主轴"></div>
+    </div>
+  </header>
+
+  <main id="results" aria-live="polite"></main>
+
+  <footer class="dock" id="dock">
+    <div class="dock-inner">
+      <label class="focus-label" for="focus-note">这次请重点帮我（可选，会写入 md 末尾）</label>
+      <textarea id="focus-note" rows="2" placeholder="例如：今晚又要失眠 loop，帮我接住情绪但不加码…"></textarea>
+      <div class="dock-actions">
+        <span id="selection-count">未选中卡片</span>
+        <button type="button" id="copy-md" disabled>复制为 md</button>
+      </div>
+      <p id="copy-status" class="copy-status" role="status"></p>
+    </div>
+  </footer>
+
+  <script src="chains.data.js"></script>
+  <script src="../runs/_index.js"></script>
+  <script src="feedback-form.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

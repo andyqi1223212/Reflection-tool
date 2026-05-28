@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Agentflow Context 审阅</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="top">
+    <p class="top-nav-link"><a href="/dev-hub.html">← 开发台</a> · <a href="/maintainer-hub.html">维护台</a></p>
+    <div class="top-row">
+      <h1>Agentflow Context 审阅</h1>
+      <p class="meta" id="meta-line">加载中…</p>
+    </div>
+
+    <div class="pipeline-bar">
+      <label class="toolbar-label" for="pipeline-select">Pipeline</label>
+      <select id="pipeline-select" aria-label="选择 Pipeline A / B / Judge"></select>
+    </div>
+
+    <p class="crosscheck" id="crosscheck-banner" aria-live="polite"></p>
+
+    <section class="manifest-panel" id="manifest-panel" aria-label="当前 runtime 依赖"></section>
+
+    <div class="stats" id="stats" aria-live="polite"></div>
+    <div class="toolbar">
+      <label class="toolbar-label" for="preset-select">预设</label>
+      <select id="preset-select" aria-label="预设方案"></select>
+      <button type="button" id="btn-apply-preset">应用预设</button>
+      <button type="button" id="btn-default-on">对齐当前 runtime</button>
+      <button type="button" id="btn-all-on">全选</button>
+      <button type="button" id="btn-all-off">全不选</button>
+      <label class="filter-active-only">
+        <input type="checkbox" id="filter-active-only" checked />
+        侧栏只显示「正在使用」
+      </label>
+      <button type="button" id="btn-export-json">导出勾选 JSON</button>
+      <button type="button" id="btn-copy-preview">复制预览</button>
+    </div>
+    <p class="hint">
+      数据由 <code>tools/export_agentflow_context_chunks.py</code> 按
+      <code>agents_runtime</code> 的 <code>build_context()</code> 与 prompt frontmatter 导出；
+      含 A/B/Judge 与 crosscheck。改 prompt 后运行 <code>bash ./start.sh</code> 刷新。
+    </p>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar" aria-label="上下文块列表"></aside>
+    <section class="main">
+      <div class="preview-tabs" role="tablist">
+        <button type="button" role="tab" class="tab active" data-tab="combined">合并</button>
+        <button type="button" role="tab" class="tab" data-tab="system">system</button>
+        <button type="button" role="tab" class="tab" data-tab="user">user</button>
+        <button type="button" role="tab" class="tab" data-tab="detail">单块阅读</button>
+      </div>
+      <div class="preview-bar">
+        <label class="filter-overlap">
+          <input type="checkbox" id="highlight-overlap" checked />
+          高亮重叠主题
+        </label>
+        <input type="search" id="chunk-search" placeholder="筛选块名称…" autocomplete="off" />
+      </div>
+      <article class="preview" id="preview" aria-live="polite"></article>
+    </section>
+  </div>
+
+  <footer class="foot">
+    <a href="../agentflow3-tocode/pipeline-b-context-curation-plan.md">实施计划</a>
+    · <a href="../agentflow3-tocode/pipeline-b-context-curation-audit.md">审计说明</a>
+    · <a href="../agentflow3-tocode/codemap-agentflow.md">codemap</a>
+  </footer>
+
+  <script src="chunks.data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
