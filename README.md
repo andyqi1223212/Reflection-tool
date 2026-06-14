@@ -76,31 +76,37 @@ bash tools/bootstrap.sh
 python -m agents_runtime.orchestrate examples/sample-conversation.md
 ```
 
-如果一切顺利，1-2 分钟后你会在 `runs/<timestamp>_sample-conversation_*/` 看到一组 JSON 文件——其中 `b.json` 就是新产生的卡。
+如果一切顺利，1-2 分钟后你会在 `runs/<timestamp>_sample-conversation_*/` 看到一组 JSON 文件——其中 `b.json` 就是新产生的卡。这一步只是确认环境跑得通。
 
-跑通了？继续看下面"开始用你自己的对话"。
+**确认跑通后，日常使用全程在前端，不用再碰命令行**——见下面。
 
 ---
 
-## 开始用你自己的对话
+## 开始用你自己的对话（全程在前端，不碰命令行）
 
-1. 把一段对话存成 markdown（任意路径，例如 `examples/my-talk.md`）。格式很自由——pipeline 看的是语义而不是结构。
-2. 跑：
+日常用法只有三步：**导出对话 → 删到只剩问题 → 前端粘贴跑**。
 
-   ```bash
-   python -m agents_runtime.orchestrate examples/my-talk.md
-   ```
+### 1. 把 AI 对话导出成 markdown
 
-3. 启动本地 dev UI 看产出的卡：
+现在 Chrome 上有不少插件能一键把你和 ChatGPT / Claude / DeepSeek 的对话导出成 markdown（应用商店搜 "export ChatGPT / Claude conversation" 一类即可）。导出后你会得到一段对话文本。
 
-   ```bash
-   bash tools/start_dev_ui.sh
-   # 浏览器自动打开 http://127.0.0.1:8765/dev-hub.html
-   ```
+### 2. 只留「问题」，最多加上那一两句**核心触动**的回答
 
-   在 Inbox 里 accept / reject 每条 run，accept 的卡会自动 append 到你的 [`inquiry-chain-starter.md`](inquiry-chain-starter.md)。
+不要把 AI 几千字的回答整段喂进来。这个 pipeline 的 prompt 是按开头那句 **「问题是资产，答案是耗材」** 设计的——A agent 真正读的是你**追问的路径**（你问了什么、怎么一步步逼近），最多保留那一两句**真正点醒你的回答**。
 
-4. 攒到一定数量后，跑 `python3 tools/export_v3_chains.py` 把卡库 export 成可检索的 JSON，前端 UI（`crystallization-prototype/index.html`）就能浏览了。
+> 喂太多答案，诊断会被原文的措辞带跑、抽不出底层机制；只留问题链 + 核心触动句，A 才能把机制重新长出来，而不是复述。
+
+所以导出后删一删：**留问题链 + 最多 1–2 句核心触动回答**，就够了。
+
+### 3. 在前端粘贴 → 运行 → 收卡
+
+1. 开发台（`dev-hub.html`）点 **Pipeline Run**，或直接开 `pipeline_run.html`。
+2. 在「1 · 选择或粘贴 Markdown」里，把上面整理好的对话**粘贴**进文本框（或从 `外部source/` 下拉选已有文件）。
+3. 点 **运行 Pipeline**，等 1–2 分钟，A→B→Judge→push 自动跑完。
+4. 去 **Inbox** 看这条 run：**accept** 的卡自动 append 到你的卡库（[`inquiry-chain-starter.md`](inquiry-chain-starter.md)），**reject** 就丢弃。
+5. 攒一阵后，阅读 UI（`crystallization-prototype/index.html`）就能检索、浏览你所有的卡。
+
+> 想批量 / 脚本化？命令行入口仍在：`python -m agents_runtime.orchestrate <你的对话.md>`。但日常用前端就够，不必碰 terminal。
 
 ---
 
